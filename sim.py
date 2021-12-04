@@ -6,7 +6,7 @@ from n_pnd import *
 N = [5, 5] # number of linked pendulums
 SLOW_MOTION = 0.25 # slow motion factor in animation
 dt = 0.001 # infinitesimal time increment in seconds
-T = 100 # length of time to be simulated
+T = 45 # length of time to be simulated
 G = 9.8
 coef = setup_coef(N)
 
@@ -14,9 +14,9 @@ coef = setup_coef(N)
 theta0 = []
 omega0 = []
 for i in range(len(N)):
-    theta0.append(np.tile(2.0, N[i])) # counterclockwise angle relative to the vertical for each rod
+    theta0.append(np.tile(3.0, N[i])) # counterclockwise angle relative to the vertical for each rod
     omega0.append(np.tile(0.0, N[i])) # counterclockwise angular velocity for each rod
-theta0[1][0] += 1.0e-10
+theta0[1][0] += 1.0e-15
 
 print("INITIAL THETA")
 print(theta0[0])

@@ -60,13 +60,15 @@ def sep_vect(data_t_0, data_t_1): # separation vector between two pendulums over
     data_t_1 = np.asarray(data_t_1)
     data_t_0 = np.append(data_t_0[0], data_t_0[1], axis=1)
     data_t_1 = np.append(data_t_1[0], data_t_1[1], axis=1)
-    z = np.linalg.norm(np.abs(data_t_1 - data_t_0), axis=1)
+    z = np.linalg.norm(np.abs(data_t_1*1.0e7 - data_t_0*1.0e7), axis=1)*1.0e-7
     return z
 def lyapunov(data_t_0, data_t_1, dt): # calculations associated with the Lyapunov exponent
     z = sep_vect(data_t_0, data_t_1)
-    log_z = np.log(z) - np.log(z[0])
+    log_z = np.log(z*1.0e10) - np.log(z[0]*1.0e10)
     time = np.arange(log_z.size)*dt
     l_approx = np.divide(log_z[1:], time[1:])
     # take limit for long time and small initial separation
-    l_exp = np.mean(l_approx[int(-1.0/dt):]) # take mean of Lyapunov exponent calculations in the last 1 s to reduce noise
+    too_big = np.where(z > 0.01)[0][0] # first time when separation is too big
+    print("Too big at t="+str(time[too_big]))
+    l_exp = np.mean(l_approx[5:too_big]) # take mean of Lyapunov exponent calculations
     return [time[1:], l_approx, l_exp]
