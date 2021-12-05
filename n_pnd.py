@@ -68,7 +68,12 @@ def lyapunov(data_t_0, data_t_1, dt): # calculations associated with the Lyapuno
     time = np.arange(log_z.size)*dt
     l_approx = np.divide(log_z[1:], time[1:])
     # take limit for long time and small initial separation
-    too_big = np.where(z > 0.01)[0][0] # first time when separation is too big
+    too_big = np.where(z > 0.01)[0] # first time when separation is too big
+    if too_big.size == 0:
+        too_big = z.size - 1
+    else:
+        too_big = too_big[0]
     print("Too big at t="+str(time[too_big]))
-    l_exp = np.mean(l_approx[5:too_big]) # take mean of Lyapunov exponent calculations
-    return [time[1:], l_approx, l_exp]
+    l_exp = np.mean(l_approx[int(too_big-3.0/dt):too_big]) # take mean of Lyapunov exponent calculations over the three seconds before becoming too big
+    l_std = np.std(l_approx[int(too_big-3.0/dt):too_big])
+    return [time[1:], l_approx, l_exp, l_std]
