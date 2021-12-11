@@ -22,11 +22,10 @@ def motion_mat(t, coef):
     return np.linalg.inv(mat)
 def motion_vect(t, o, G, coef):
     v = -G*np.sin(t)
-    o_2 = np.square(o)
     th_mat = np.sin(theta_mat(t))
     for i in range(t.size):
         for j in range(t.size):
-            delta = coef[t.size][i][j]*th_mat[j][i]*o_2[j]
+            delta = coef[t.size][i][j]*th_mat[j][i]*o[j]*o[j]
             v[i] += delta
     return v
 def lagrange_f(t, o, G, coef):
@@ -41,8 +40,8 @@ def evolve_pnd(t0, o0, T, dt, G, coef):
     data_t = []
     data_o = []
     for i in range(int(T/dt)):
-        data_x.append(np.append(0, np.cumsum(np.sin(theta))))
-        data_y.append(np.append(0, np.cumsum(-np.cos(theta))))
+        data_x.append(np.append(0, np.cumsum(np.sin(theta)))/theta.size)
+        data_y.append(np.append(0, np.cumsum(-np.cos(theta)))/theta.size)
         data_t.append(np.copy(theta))
         data_o.append(np.copy(omega))
         k1 = lagrange_f(theta, omega, G, coef)
@@ -74,6 +73,6 @@ def lyapunov(data_t_0, data_t_1, dt): # calculations associated with the Lyapuno
     else:
         too_big = too_big[0]
     print("Too big at t="+str(time[too_big]))
-    l_exp = np.mean(l_approx[int(too_big-3.0/dt):too_big]) # take mean of Lyapunov exponent calculations over the three seconds before becoming too big
+    l_exp = np.mean(l_approx[max(int(too_big-3.0/dt),0):too_big]) # take mean of Lyapunov exponent calculations over the three seconds before becoming too big
     l_std = np.std(l_approx[int(too_big-3.0/dt):too_big])
     return [time[1:], l_approx, l_exp, l_std]

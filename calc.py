@@ -7,10 +7,9 @@ N = []
 for i in range(len(angles)):
     N.append(n_rods)
     N.append(n_rods)
-SLOW_MOTION = 0.25 # slow motion factor in animation
 dt = 0.001 # infinitesimal time increment in seconds
-T = 30 # length of time to be simulated
-G = 9.8
+T = 90 # length of time to be simulated
+G = 9.8*n_rods
 coef = setup_coef(N)
 
 print("Testing n="+str(n_rods))
@@ -41,4 +40,3 @@ for i in range(len(angles)):
     lyap = lyapunov(data_t_0, data_t_1, dt)
     print(lyap[2])
     print(lyap[3])
-    print("")

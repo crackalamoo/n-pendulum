@@ -11,7 +11,7 @@ def list_float(l):
         ret.append(float(l[i]))
     return ret
 def linear_func(ydata): # function intended to linearize data
-    return np.exp(1.0/np.asarray(ydata))
+    return 1.0/np.square(np.asarray(ydata))
 def regress_func(p): # regression line from Pearson calculation
     return p.slope*np.asarray(list_float(N))+p.intercept
 
@@ -34,29 +34,38 @@ for i in range(len(angles)):
     spearman.append(stats.spearmanr(list_float(N), data[i]))
     print(spearman[i])
     pearson.append(stats.linregress(list_float(N), linear_func(data[i])))
+    print(pearson[i])
 
 colors = ['C0', 'C1', 'C2', 'y']
 plt.figure(0)
 for i in range(len(data)):
-    plt.plot(N, data[i], label=angles[i], color=colors[i%len(colors)])
-plt.title("Decreasing chaos for increasing number of connected pendulums")
+    plt.plot(list_float(N), data[i], label=angles[i], color=colors[i%len(colors)])
+plt.title("Decreasing chaos for high number of connected pendulums")
 plt.xlabel("Number of pendulums")
 plt.ylabel("Lyapunov exponent $\\lambda$ (s${}^{-1}$)")
 plt.legend(title="Angle (rad)")
 
 plt.figure(1)
 for i in range(len(data)):
-    plt.plot(N, linear_func(data[i]), label=angles[i], color=colors[i%len(colors)])
-    plt.plot(N, regress_func(pearson[i]), color=colors[i%len(colors)], linestyle='--')
+    plt.plot(list_float(N), linear_func(data[i]), label=angles[i], color=colors[i%len(colors)])
+    plt.plot(list_float(N), regress_func(pearson[i]), color=colors[i%len(colors)], linestyle='--')
 plt.title("Linear regression model for decreasing chaos in connected pendulums")
 plt.xlabel("Number of pendulums")
 plt.ylabel("exp$( \\frac{1}{\\lambda} )$")
 
 fig, ax = plt.subplots(2, 2)
 fig.suptitle("Standardized residual plots")
+residuals = []
+fitted = []
 for i in range(len(data)):
-    residuals = linear_func(data[i])-regress_func(pearson[i])
-    ax[int(i/2),i%2].scatter(list_float(N), residuals/np.std(residuals), color=colors[i%len(colors)])
+    residuals.append(linear_func(data[i])-regress_func(pearson[i]))
+    fitted.append(linear_func(data[i]))
+    ax[int(i/2),i%2].scatter(fitted[i], residuals[i]/np.std(residuals[i]), color=colors[i%len(colors)])
+
+fig2, ax2 = plt.subplots(2, 2)
+for i in range(len(residuals)):
+    stats.probplot(residuals[i], plot=ax2[int(i/2),i%2])
+    ax2[int(i/2),i%2].set_title("")
 
 plt.show()
 

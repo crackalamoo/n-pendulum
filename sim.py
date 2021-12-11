@@ -3,19 +3,20 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from n_pnd import *
 
-n_two = 2
+n_two = 25
 N = [n_two, n_two] # number of linked pendulums
-SLOW_MOTION = 0.25 # slow motion factor in animation
+SLOW_MOTION = 1 # slow motion factor in animation
 dt = 0.001 # infinitesimal time increment in seconds
-T = 30 # length of time to be simulated
-G = 9.8
+T = 15 # length of time to be simulated
+G = 9.8*n_two
+#G *= float(n_two) # effective gravity
 coef = setup_coef(N)
 
 # initial conditions
 theta0 = []
 omega0 = []
 for i in range(len(N)):
-    theta0.append(np.tile(1.7, N[i])) # counterclockwise angle relative to the vertical for each rod
+    theta0.append(np.tile(1.5, N[i])) # counterclockwise angle relative to the vertical for each rod
     omega0.append(np.tile(0.0, N[i])) # counterclockwise angular velocity for each rod
 theta0[1][0] += 1.0e-15
 
@@ -41,8 +42,8 @@ def animate(i):
     time_text.set_text("t="+str(int(i*20)/SLOW_MOTION/1000.0))
     return draw
 ani = animation.FuncAnimation(fig, animate, frames=nframes, interval=20, save_count=nframes)
-plt.xlim([-1.1*max(N), 1.1*max(N)])
-plt.ylim([-1.1*max(N), 1.1*max(N)])
+plt.xlim([-1.1, 1.1])
+plt.ylim([-1.1, 1.1])
 
 if len(N) >= 2:
     fig2, ax2 = plt.subplots()
