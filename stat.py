@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 CSV = "dat10.csv"
 RMV = 0
 
-def list_float(l):
+def list_float(l): # converts a list of some type to a list of floats
     ret = []
     for i in range(len(l)):
         ret.append(float(l[i]))

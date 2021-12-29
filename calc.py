@@ -1,15 +1,16 @@
 import numpy as np
 from n_pnd import *
 
-n_rods = 2
+n_rods = 390
 angles = [1.5, 2.0, 2.5, 3.0]
 N = []
+L = 50.0 # total length of pendulum
 for i in range(len(angles)):
     N.append(n_rods)
     N.append(n_rods)
 dt = 0.001 # infinitesimal time increment in seconds
-T = 90 # length of time to be simulated
-G = 9.8*n_rods
+T = 40 # length of time to be simulated
+G = 9.8/L # effective gravity
 coef = setup_coef(N)
 
 print("Testing n="+str(n_rods))

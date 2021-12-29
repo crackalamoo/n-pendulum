@@ -21,7 +21,7 @@ def motion_mat(t, coef):
     mat = coef[t.size]*np.cos(theta_mat(t))
     return np.linalg.inv(mat)
 def motion_vect(t, o, G, coef):
-    v = -G*np.sin(t)
+    v = -G*t.size*np.sin(t)
     th_mat = np.sin(theta_mat(t))
     for i in range(t.size):
         for j in range(t.size):
