@@ -2,15 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from n_pnd import *
 
-n_rods = 200
+n_rods = 25
 angles = [2.0]
 N = []
 for i in range(len(angles)):
     N.append(n_rods)
     N.append(n_rods)
 dt = 0.001 # infinitesimal time increment in seconds
-T = 20 # length of time to be simulated
-L = 50.0
+T = 30 # length of time to be simulated
+L = 100.0
 G = 9.8/L # effective gravity
 coef = setup_coef(N)
 
@@ -49,10 +49,10 @@ x1_0 = np.asarray(x1)[:,:,1]
 y1_0 = np.asarray(y1)[:,:,1]
 d_0 = np.sqrt(np.square(x1_0-x0_0) + np.square(y1_0-y0_0)).T
 plt.plot(np.arange(dt, T, dt), np.log(d_0[1:]))
-x0_5 = np.asarray(x0)[:,:,int(n_rods/2)]
-y0_5 = np.asarray(y0)[:,:,int(n_rods/2)]
-x1_5 = np.asarray(x1)[:,:,int(n_rods/2)]
-y1_5 = np.asarray(y1)[:,:,int(n_rods/2)]
+x0_5 = np.asarray(x0)[:,:,int((n_rods+1)/2)]
+y0_5 = np.asarray(y0)[:,:,int((n_rods+1)/2)]
+x1_5 = np.asarray(x1)[:,:,int((n_rods+1)/2)]
+y1_5 = np.asarray(y1)[:,:,int((n_rods+1)/2)]
 d_5 = np.sqrt(np.square(x1_5-x0_5) + np.square(y1_5-y0_5)).T
 plt.plot(np.arange(dt, T, dt), np.log(d_5[1:]))
 x0_1 = np.asarray(x0)[:,:,n_rods]
@@ -60,7 +60,11 @@ y0_1 = np.asarray(y0)[:,:,n_rods]
 x1_1 = np.asarray(x1)[:,:,n_rods]
 y1_1 = np.asarray(y1)[:,:,n_rods]
 d_1 = np.sqrt(np.square(x1_1-x0_1) + np.square(y1_1-y0_1)).T
-plt.plot(np.arange(dt, T, dt), np.log(d_1[1:]))
+plt.plot(np.arange(dt, T, dt), d_1[1:])
+plt.yscale("log")
+plt.title("$n="+str(n_rods)+"$, $\ell="+str(L)+"$ m, $\\theta_0="+str(angles[0])+"$")
+plt.ylabel("$\sqrt{x^2+y^2}$")
+plt.xlabel("Time (s)")
 
-#plt.savefig("bah/diff"+str(n_rods)+".png")
+plt.savefig("bah/diff"+str(n_rods)+"_"+str(int(L))+"m.png")
 plt.show()

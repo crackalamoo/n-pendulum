@@ -2,7 +2,7 @@ import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-CSV = "dat10.csv"
+CSV = "dat.csv"
 RMV = 0
 
 def list_float(l): # converts a list of some type to a list of floats
@@ -11,7 +11,7 @@ def list_float(l): # converts a list of some type to a list of floats
         ret.append(float(l[i]))
     return ret
 def linear_func(ydata): # function intended to linearize data
-    return 1.0/np.square(np.asarray(ydata))
+    return np.exp(np.asarray(ydata))
 def regress_func(p): # regression line from Pearson calculation
     return p.slope*np.asarray(list_float(N))+p.intercept
 
@@ -40,7 +40,6 @@ colors = ['C0', 'C1', 'C2', 'y']
 plt.figure(0)
 for i in range(len(data)):
     plt.plot(list_float(N), data[i], label=angles[i], color=colors[i%len(colors)])
-plt.title("Decreasing chaos for high number of connected pendulums")
 plt.xlabel("Number of pendulums")
 plt.ylabel("Lyapunov exponent $\\lambda$ (s${}^{-1}$)")
 plt.legend(title="Angle (rad)")
@@ -49,7 +48,7 @@ plt.figure(1)
 for i in range(len(data)):
     plt.plot(list_float(N), linear_func(data[i]), label=angles[i], color=colors[i%len(colors)])
     plt.plot(list_float(N), regress_func(pearson[i]), color=colors[i%len(colors)], linestyle='--')
-plt.title("Linear regression model for decreasing chaos in connected pendulums")
+plt.title("Linear regression model for increasing chaos in connected pendulums")
 plt.xlabel("Number of pendulums")
 plt.ylabel("exp$( \\frac{1}{\\lambda} )$")
 
