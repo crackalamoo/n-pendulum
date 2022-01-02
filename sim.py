@@ -3,13 +3,13 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from n_pnd import *
 
-n_two = 2
+n_two = 25
 N = [n_two, n_two] # number of linked pendulums
 SLOW_MOTION = 1 # slow motion factor in animation
 dt = 0.001 # infinitesimal time increment in seconds
 T = 35 # length of time to be simulated
-G = 9.8*n_two
-#G *= float(n_two) # effective gravity
+L = 50.0
+G = 9.8/L # effective gravity
 coef = setup_coef(N)
 
 # initial conditions
